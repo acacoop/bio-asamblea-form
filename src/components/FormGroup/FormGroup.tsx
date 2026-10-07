@@ -31,7 +31,7 @@ export default function FormGroup({ cooperativa }: Props) {
   >([]);
 
   const [showAddFor, setShowAddFor] = useState<null | "titular" | "suplente">(
-    null
+    null,
   );
   const [showCarta, setShowCarta] = useState(false);
 
@@ -45,8 +45,8 @@ export default function FormGroup({ cooperativa }: Props) {
       typeof cooperativa.votes === "number"
         ? cooperativa.votes
         : cooperativa.votes
-        ? Number(cooperativa.votes)
-        : ""
+          ? Number(cooperativa.votes)
+          : "",
     );
 
     const autoridades =
@@ -73,10 +73,10 @@ export default function FormGroup({ cooperativa }: Props) {
     }
 
     const rawTitulares = parseArrayField(
-      datos?.titulares ?? (cooperativa as any).titulares
+      datos?.titulares ?? (cooperativa as any).titulares,
     );
     const rawSuplentes = parseArrayField(
-      datos?.suplentes ?? (cooperativa as any).suplentes
+      datos?.suplentes ?? (cooperativa as any).suplentes,
     );
 
     const normalize = (arr: any[]) =>
@@ -112,7 +112,7 @@ export default function FormGroup({ cooperativa }: Props) {
     updatedTitulares?: typeof titulares,
     updatedSuplentes?: typeof suplentesArr,
     updatedAutoridades?: { presidente: string; secretario: string },
-    updatedContacto?: { correoElectronico: string }
+    updatedContacto?: { correoElectronico: string },
   ) {
     try {
       const raw = localStorage.getItem("formExistingData");
@@ -135,7 +135,7 @@ export default function FormGroup({ cooperativa }: Props) {
       localStorage.setItem("formExistingData", JSON.stringify(parsed));
       try {
         window.dispatchEvent(
-          new CustomEvent("formExistingDataChanged", { detail: parsed })
+          new CustomEvent("formExistingDataChanged", { detail: parsed }),
         );
       } catch (e) {}
     } catch (e) {}
@@ -143,7 +143,7 @@ export default function FormGroup({ cooperativa }: Props) {
 
   function handleAddItemTo(
     kind: "titular" | "suplente",
-    item: { id: string; nombre: string; documento?: string }
+    item: { id: string; nombre: string; documento?: string },
   ) {
     if (kind === "titular") {
       const next = [...titulares, item];
@@ -170,7 +170,7 @@ export default function FormGroup({ cooperativa }: Props) {
 
   function handleUpdateItemIn(
     kind: "titular" | "suplente",
-    item: { id: string; nombre: string; documento?: string }
+    item: { id: string; nombre: string; documento?: string },
   ) {
     if (kind === "titular") {
       const next = titulares.map((t) => (t.id === item.id ? item : t));
@@ -185,11 +185,11 @@ export default function FormGroup({ cooperativa }: Props) {
 
   const canAddTitular = titulares.every(
     (t) =>
-      String(t.nombre).trim() !== "" && String(t.documento ?? "").trim() !== ""
+      String(t.nombre).trim() !== "" && String(t.documento ?? "").trim() !== "",
   );
   const canAddSuplente = suplentesArr.every(
     (s) =>
-      String(s.nombre).trim() !== "" && String(s.documento ?? "").trim() !== ""
+      String(s.nombre).trim() !== "" && String(s.documento ?? "").trim() !== "",
   );
 
   const maxPeople =
@@ -220,7 +220,8 @@ export default function FormGroup({ cooperativa }: Props) {
         <div className="notice">
           <h3>✏️ Datos del formulario</h3>
           <p>
-            Complete o modifique la información según corresponda. Los datos se guardarán automáticamente.
+            Complete o modifique la información según corresponda. Los datos se
+            guardarán automáticamente.
           </p>
         </div>
       )}
@@ -253,7 +254,8 @@ export default function FormGroup({ cooperativa }: Props) {
           onChange={(v) => setContactoEmail(String(v))}
         />
         <p className="help-text">
-          Ante cualquier problema con el formulario, nos comunicaremos a este correo.
+          Ante cualquier problema con el formulario, nos comunicaremos a este
+          correo.
         </p>
       </div>
 
@@ -294,59 +296,59 @@ export default function FormGroup({ cooperativa }: Props) {
       </div>
 
       {SHOW_SUPLENTES_Y_CARTA_PODER && (
-      <div className="form-group">
-        <h2 className="title-form-group">{`Suplentes (máximo ${maxPeople})`}</h2>
-        {suplentesArr.length === 0 && showAddFor !== "suplente" && (
-          <p className="empty">No hay suplentes cargados.</p>
-        )}
-        {suplentesArr.map((s) => (
-          <AddItem
-            key={s.id}
-            initial={s}
-            onEdit={(item) => handleUpdateItemIn("suplente", item)}
-            onRemove={(id) => handleRemoveItemFrom("suplente", id)}
-          />
-        ))}
-
-        {showAddFor === "suplente" && suplentesArr.length < maxPeople && (
-          <div className="add-new-item">
+        <div className="form-group">
+          <h2 className="title-form-group">{`Suplentes (máximo ${maxPeople})`}</h2>
+          {suplentesArr.length === 0 && showAddFor !== "suplente" && (
+            <p className="empty">No hay suplentes cargados.</p>
+          )}
+          {suplentesArr.map((s) => (
             <AddItem
-              onAdd={(item) => {
-                handleAddItemTo("suplente", item);
-                setShowAddFor(null);
-              }}
-              onClose={() => setShowAddFor(null)}
+              key={s.id}
+              initial={s}
+              onEdit={(item) => handleUpdateItemIn("suplente", item)}
+              onRemove={(id) => handleRemoveItemFrom("suplente", id)}
+            />
+          ))}
+
+          {showAddFor === "suplente" && suplentesArr.length < maxPeople && (
+            <div className="add-new-item">
+              <AddItem
+                onAdd={(item) => {
+                  handleAddItemTo("suplente", item);
+                  setShowAddFor(null);
+                }}
+                onClose={() => setShowAddFor(null)}
+              />
+            </div>
+          )}
+
+          <div className="button-add-item-container">
+            <Button
+              label="Agregar Suplente"
+              color="--aca-blue-light"
+              onClick={() => setShowAddFor("suplente")}
+              disabled={!canAddSuplente || suplentesArr.length >= maxPeople}
             />
           </div>
-        )}
-
-        <div className="button-add-item-container">
-          <Button
-            label="Agregar Suplente"
-            color="--aca-blue-light"
-            onClick={() => setShowAddFor("suplente")}
-            disabled={!canAddSuplente || suplentesArr.length >= maxPeople}
-          />
         </div>
-      </div>
       )}
       {SHOW_SUPLENTES_Y_CARTA_PODER && (
-      <div className="form-group">
-        <h2 className="title-form-group">Cartas Poder</h2>
-        <p className="help-text">
-          Un delegado puede representar por poder hasta dos delegados.
-        </p>
-        <CartaPoder />
+        <div className="form-group">
+          <h2 className="title-form-group">Cartas Poder</h2>
+          <p className="help-text">
+            Un delegado puede representar por poder hasta dos delegados.
+          </p>
+          <CartaPoder />
 
-        {showCarta && (
-          <div className="carta-modal">
-            <CartaPoder />
-            <div style={{ marginTop: 8 }}>
-              <Button label="Cerrar" onClick={() => setShowCarta(false)} />
+          {showCarta && (
+            <div className="carta-modal">
+              <CartaPoder />
+              <div style={{ marginTop: 8 }}>
+                <Button label="Cerrar" onClick={() => setShowCarta(false)} />
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
       )}
     </div>
   );
