@@ -6,7 +6,7 @@ import Metrics from "./pages/Metrics/Metrics";
 
 function App() {
   return (
-    <Router basename="/asamblea-form">
+    <Router basename="/bio-asamblea-form">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/form" element={<Form />} />

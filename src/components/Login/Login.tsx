@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import "./Login.css";
-const AUTH_METRICS_ENDPOINT = import.meta.env.VITE_AUTH_METRICAS_ENDPOINT;
+const AUTH_METRICS_ENDPOINT = import.meta.env.VITE_AUTH_METRICS_ENDPOINT;
 
 interface LoginProps {
   onLoginSuccess: () => void;
@@ -18,7 +18,6 @@ export default function Login({ onLoginSuccess }: LoginProps) {
     setLoading(true);
 
     try {
-
       const response = await fetch(AUTH_METRICS_ENDPOINT, {
         method: "POST",
         headers: {
@@ -36,12 +35,12 @@ export default function Login({ onLoginSuccess }: LoginProps) {
       if (response.status === 200) {
         // Autenticación exitosa
         console.log("✅ Autenticación exitosa");
-        
+
         // Guardar token en sessionStorage (se borra al cerrar el navegador)
         const authToken = btoa(`${usuario}:${Date.now()}`); // Token simple
         sessionStorage.setItem("metrics_auth_token", authToken);
         sessionStorage.setItem("metrics_auth_user", usuario);
-        
+
         onLoginSuccess();
       } else {
         // Error de autenticación
@@ -93,11 +92,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
             />
           </div>
 
-          {error && (
-            <div className="error-message">
-              ⚠️ {error}
-            </div>
-          )}
+          {error && <div className="error-message">⚠️ {error}</div>}
 
           <button
             type="submit"

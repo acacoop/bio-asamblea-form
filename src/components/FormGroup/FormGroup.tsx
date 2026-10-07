@@ -7,6 +7,9 @@ import Button from "../Button/Button";
 import CartaPoder from "../CartaPoder/CartaPoder";
 import type { Cooperativa } from "../../types/types";
 
+// ACABIO no usa suplentes ni cartas poder; poner en true para reactivarlos.
+const SHOW_SUPLENTES_Y_CARTA_PODER = false;
+
 type Props = {
   cooperativa?: Cooperativa | null;
 };
@@ -290,6 +293,7 @@ export default function FormGroup({ cooperativa }: Props) {
         </div>
       </div>
 
+      {SHOW_SUPLENTES_Y_CARTA_PODER && (
       <div className="form-group">
         <h2 className="title-form-group">{`Suplentes (máximo ${maxPeople})`}</h2>
         {suplentesArr.length === 0 && showAddFor !== "suplente" && (
@@ -325,6 +329,8 @@ export default function FormGroup({ cooperativa }: Props) {
           />
         </div>
       </div>
+      )}
+      {SHOW_SUPLENTES_Y_CARTA_PODER && (
       <div className="form-group">
         <h2 className="title-form-group">Cartas Poder</h2>
         <p className="help-text">
@@ -341,6 +347,7 @@ export default function FormGroup({ cooperativa }: Props) {
           </div>
         )}
       </div>
+      )}
     </div>
   );
 }

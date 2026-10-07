@@ -35,13 +35,13 @@ const BodyForm: React.FC<BodyFormProps> = ({
           />
           <Card
             title="📋 Descripción"
-            description="Documentación para nominar delegados con derecho a voto en la Asamblea General Ordinaria de la Asociación de Cooperativas Argentinas Coop. Ltda. Permite registrar a los delegados titulares y suplentes, así como las cartas poder correspondientes.
+            description="Documentación para nominar delegados con derecho a voto en la Asamblea General Ordinaria de la ACABIO. Permite registrar a los delegados titulares.
 
-Tener en cuenta: Un delegado puede votar por sí mismo, y representar por poder hasta dos delegados más. Todos deben estar nominados en la Credencial."
+Tener en cuenta: Todos los delegados deben estar nominados en la Credencial."
           />
           <Card
             title="🔐 Acceso Seguro"
-            description="Para acceder al formulario, ingrese el Código de Cooperativa ACA y el código verificador proporcionado. Este sistema garantiza que solo personal autorizado pueda registrar los datos de cada cooperativa."
+            description="Para acceder al formulario, ingrese el Código de Cooperativa ACABIO y el código verificador proporcionado. Este sistema garantiza que solo personal autorizado pueda registrar los datos de cada cooperativa."
           />
           <Card
             title="ℹ️ Información Importante"
@@ -50,7 +50,7 @@ Tener en cuenta: Un delegado puede votar por sí mismo, y representar por poder 
                 Asegúrese de completar toda la información requerida y verificar
                 los datos antes de enviar el formulario. Por consultas dirigirse
                 a{" "}
-                <a href="mailto:asamblea@acacoop.com.ar?subject=Consulta sobre Asamblea 2025&body=Hola, tengo una consulta sobre la Asamblea 2025.">
+                <a href="mailto:asamblea@acacoop.com.ar?subject=Consulta sobre Asamblea 2026&body=Hola, tengo una consulta sobre la Asamblea 2025.">
                   asamblea@acacoop.com.ar
                 </a>
               </>

@@ -3,6 +3,8 @@ import Docxtemplater from "docxtemplater";
 import templateCredencialUrl from "../assets/template-credencial.docx?url";
 import templateCartaPoderUrl from "../assets/template-carta-poder.docx?url";
 
+const ASAMBLEA_YEAR = 2026;
+
 const AUTOMATE_UPLOAD_ENDPOINT =
   import.meta.env.VITE_AUTOMATE_UPLOAD_ENDPOINT || "";
 const AUTOMATE_FETCH_ENDPOINT =
@@ -39,14 +41,14 @@ export function transformFormDataToSchema(): any {
         parsedCoop.votos ||
         parsedForm?.cooperativa?.votes ||
         parsedForm?.cooperativa?.votos ||
-        0
+        0,
     ),
     suplentes: parseInt(
       parsedCoop.suplentes ||
         parsedCoop.substitutes ||
         parsedForm?.cooperativa?.suplentes ||
         parsedForm?.cooperativa?.substitutes ||
-        0
+        0,
     ),
     car:
       parsedCoop.CAR ||
@@ -231,10 +233,10 @@ export async function generateCartaPoderPDF(formData: any): Promise<Blob> {
     };
 
     const titulares = parseArray(
-      formData.formData?.titulares || formData.titulares
+      formData.formData?.titulares || formData.titulares,
     );
     const suplentes = parseArray(
-      formData.formData?.suplentes || formData.suplentes
+      formData.formData?.suplentes || formData.suplentes,
     );
     const cartasPoder = parseArray(formData.formData?.datos?.cartasPoder);
     const allPeople = [...titulares, ...suplentes];
@@ -262,11 +264,13 @@ export async function generateCartaPoderPDF(formData: any): Promise<Blob> {
         cooperativaName,
         presidente,
         secretario,
+        anio: ASAMBLEA_YEAR,
+        year: ASAMBLEA_YEAR,
       };
 
       console.log("Generating carta poder with data:", templateData);
 
-      var fileName = `Asamblea ACA CL 2025 - ${
+      var fileName = `Asamblea ACABIO ${ASAMBLEA_YEAR} - ${
         formData.cooperativa?.code || "Unknown"
       } - CartaPoder - ${poderante.nombre || "SinNombre"}.docx`;
       // Create a new docxtemplater instance for each carta
@@ -320,6 +324,8 @@ export async function generatePDF(formData: any): Promise<Blob> {
 
     // Prepare data for the template - flatten the structure for docxtemplater
     const templateData = {
+      anio: ASAMBLEA_YEAR,
+      year: ASAMBLEA_YEAR,
       // Flatten cooperativa to root level
       cooperativaName:
         formData.cooperativa?.name || formData.cooperativa?.nombre || "",
@@ -339,14 +345,14 @@ export async function generatePDF(formData: any): Promise<Blob> {
           nombre: t.nombre || "",
           documento: t.documento || t.dni || "",
           apoderado: t.apoderado || "",
-        })
+        }),
       ),
       suplentes: (formData.formData?.suplentes || formData.suplentes || []).map(
         (s: any) => ({
           nombre: s.nombre || "",
           documento: s.documento || s.dni || "",
           apoderado: s.apoderado || "",
-        })
+        }),
       ),
     };
 
@@ -380,7 +386,7 @@ export async function generatePDF(formData: any): Promise<Blob> {
  */
 export async function uploadPDF(
   files: Array<{ blob: Blob; name: string }>,
-  cooperativaCode: string
+  cooperativaCode: string,
 ): Promise<{
   success: boolean;
   files?: Array<{ name: string; fileContent: string }>;
@@ -392,7 +398,7 @@ export async function uploadPDF(
       files.map(async (file) => ({
         name: file.name,
         content: await blobToBase64(file.blob),
-      }))
+      })),
     );
 
     const body: any = {
@@ -410,7 +416,7 @@ export async function uploadPDF(
 
     if (!response.ok) {
       throw new Error(
-        `Upload failed: ${response.status} ${response.statusText}`
+        `Upload failed: ${response.status} ${response.statusText}`,
       );
     }
 
@@ -465,7 +471,7 @@ export async function fetchPDFs(cooperativaCode: string): Promise<{
 
     if (!response.ok) {
       throw new Error(
-        `Fetch failed: ${response.status} ${response.statusText}`
+        `Fetch failed: ${response.status} ${response.statusText}`,
       );
     }
 
@@ -504,7 +510,7 @@ export async function processFormSubmission(): Promise<{
 
     // Step 3: Create filename with timestamp
     const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, "-");
-    const fileName = `Asamblea ACA CL 2025 - ${formData.cooperativa.code} - ${timestamp}.docx`;
+    const fileName = `Asamblea ACABIO ${ASAMBLEA_YEAR} - ${formData.cooperativa.code} - ${timestamp}.docx`;
 
     const files = [{ blob: pdfBlob, name: fileName }]; // Include carta poder as second file
 
@@ -534,7 +540,7 @@ export async function downloadGeneratedDocument(): Promise<{
     const credencialBlob = await generatePDF(formData);
     const cartasPoderBlobs = await generateCartaPoderPDF(formData);
 
-    const fileName = `Asamblea ACA CL 2025 - ${
+    const fileName = `Asamblea ACABIO ${ASAMBLEA_YEAR} - ${
       formData.cooperativa?.code || "Unknown"
     } - Credencial.docx`;
 
@@ -549,7 +555,7 @@ export async function downloadGeneratedDocument(): Promise<{
 
     const uploadResult = await uploadPDF(
       files,
-      formData.cooperativa?.code || "Unknown"
+      formData.cooperativa?.code || "Unknown",
     );
     return uploadResult;
   } catch (error) {

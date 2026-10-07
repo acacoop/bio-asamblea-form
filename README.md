@@ -1,6 +1,6 @@
-# Asamblea Form (fork)
+# Asamblea Form ACABIO (fork)
 
-Este repositorio es un fork del formulario base original adaptado para el flujo de votación y manejo de poderes de la Asociación de Cooperativas Argentinas. Contiene lógica de autorización de acceso, carga/normalización de datos de la cooperativa, gestión dinámica de titulares y cartas de poder, y manejo de archivos adjuntos exportables.
+Este repositorio es un fork del formulario base original adaptado para el flujo de votación y manejo de poderes de ACABIO. Contiene lógica de autorización de acceso, carga/normalización de datos de la cooperativa, gestión dinámica de titulares y cartas de poder, y manejo de archivos adjuntos exportables.
 
 Resumen rápido
 
@@ -13,7 +13,6 @@ Resumen rápido
 src/
 ├── assets/
 │   ├── download.svg
-│   ├── logo.webp
 │   └── template-*.docx
 ├── components/
 │   ├── AddItem/
@@ -54,14 +53,32 @@ src/
 Clonar el repositorio y levantar el proyecto en modo desarrollo:
 
 ```bash
-git clone https://github.com/acacoop/asamblea-form.git
-cd asamblea-form
+git clone https://github.com/acacoop/bio-asamblea-form.git
+cd bio-asamblea-form
 npm install
 npm run dev
 ```
 
 Abrir en el navegador:
-http://localhost:5173/ (por defecto en Vite)
+http://localhost:5173/bio-asamblea-form/ (la `base` de Vite es `/bio-asamblea-form/`)
+
+## Deploy (GitHub Pages)
+
+La app se publica en la rama `gh-pages` con el paquete `gh-pages`. `base` en `vite.config.ts` y `basename` del Router en `src/App.tsx` deben coincidir con el nombre del repo (`bio-asamblea-form`).
+
+```bash
+npm run build
+npm run deploy
+```
+
+Si el repo local no tiene remoto, agregarlo antes de publicar:
+
+```bash
+git remote add origin https://github.com/acacoop/bio-asamblea-form.git
+git remote -v
+```
+
+Luego, en GitHub: Settings → Pages → Source: rama `gh-pages`, carpeta `/ (root)`.
 
 ## Uso / Notas rápidas
 
@@ -98,7 +115,7 @@ Scripts útiles:
 ## Licencia
 
 Todos los derechos reservados.  
-Este proyecto es de uso exclusivo dentro de Asociación de Cooperativas Argentinas C.L.  
+Este proyecto es de uso exclusivo dentro de ACABIO.  
 No está permitido copiar, distribuir ni modificar fuera de la organización.
 
 ## Autor / Contacto

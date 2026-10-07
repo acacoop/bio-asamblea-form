@@ -26,7 +26,7 @@ export default function AccessToForm() {
         localStorage.setItem("cooperativa", JSON.stringify(data.cooperativa));
 
         const datos = await consultarDatos(
-          data.cooperativa.code || cooperativeId
+          data.cooperativa.code || cooperativeId,
         );
         if (datos) {
           localStorage.setItem("formExistingData", JSON.stringify(datos));
@@ -66,7 +66,7 @@ export default function AccessToForm() {
       <div className="access-form-container">
         <div className="input-group">
           <label className="input-label" htmlFor="cooperativeId">
-            Código de Cooperativa ACA <span className="required">*</span>
+            Código de Cooperativa ACABIO <span className="required">*</span>
           </label>
           <input
             className="input-field"

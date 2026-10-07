@@ -1,5 +1,5 @@
-import Logo from "../../assets/logo.webp";
 import { useNavigate } from "react-router-dom";
+import logoBio from "../../assets/logo_bio.png";
 import "./HeaderForm.css";
 
 type HeaderFormProps = {
@@ -19,8 +19,8 @@ export default function HeaderForm({
           Volver
         </button>
       )}
-      <div className="logo-container">
-        <img src={Logo} alt="Logo" className="logo" />
+      <div className="brand-logo-container">
+        <img className="brand-logo" src={logoBio} alt="ACABIO" />
       </div>
       <div className="container-title-form">
         <h1 className="title-form">{titleForm}</h1>
