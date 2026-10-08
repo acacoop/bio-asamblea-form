@@ -104,9 +104,9 @@ export function transformFormDataToSchema(): any {
   const suplentes = parseArray(parsedForm?.datos?.suplentes);
   const cartasPoder: any[] = parseArray(parsedForm?.datos?.cartasPoder);
 
-  // Resumen
+  // Valor fijo para no pisar los votos máximos de la cooperativa en el flujo
   const resumen = {
-    votosEfectivos: parseInt(parsedForm?.datos?.resumen?.votosEfectivos || 0),
+    votosEfectivos: 1,
   };
 
   // Timestamp
