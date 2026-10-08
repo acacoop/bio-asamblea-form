@@ -31,13 +31,13 @@ const BodyForm: React.FC<BodyFormProps> = ({
         <>
           <Card
             title="📅 Fecha de la Asamblea"
-            description="30 de Octubre de 2026"
+            description="29 de Octubre de 2026"
           />
           <Card
             title="📋 Descripción"
-            description="Documentación para nominar delegados con derecho a voto en la Asamblea General Ordinaria de la ACABIO. Permite registrar a los delegados titulares.
+            description="Documentación para nominar al delegado con derecho a voto en la Asamblea General Ordinaria de la ACABIO. Permite registrar al delegado titular.
 
-Tener en cuenta: Todos los delegados deben estar nominados en la Credencial."
+Tener en cuenta: El delegado debe estar nominado en la Credencial."
           />
           <Card
             title="🔐 Acceso Seguro"
@@ -50,8 +50,8 @@ Tener en cuenta: Todos los delegados deben estar nominados en la Credencial."
                 Asegúrese de completar toda la información requerida y verificar
                 los datos antes de enviar el formulario. Por consultas dirigirse
                 a{" "}
-                <a href="mailto:asamblea@acacoop.com.ar?subject=Consulta sobre Asamblea 2026&body=Hola, tengo una consulta sobre la Asamblea 2025.">
-                  asamblea@acacoop.com.ar
+                <a href="mailto:acabiocomunicaciones@acacoop.com.ar?subject=Consulta sobre Asamblea 2026&body=Hola, tengo una consulta sobre la Asamblea 2026.">
+                  acabiocomunicaciones@acacoop.com.ar
                 </a>
               </>
             }
