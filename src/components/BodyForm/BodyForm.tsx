@@ -39,7 +39,7 @@ const BodyForm: React.FC<BodyFormProps> = ({
           />
           <Card
             title="🔐 Acceso Seguro"
-            description="Para acceder al formulario, ingrese el Código de Cooperativa ACABIO y el código verificador proporcionado. Este sistema garantiza que solo personal autorizado pueda registrar los datos de cada cooperativa."
+            description="Para acceder al formulario, ingrese el Código de ingreso y el código verificador proporcionado. Este sistema garantiza que solo personal autorizado pueda registrar los datos de cada cooperativa."
           />
           <Card
             title="ℹ️ Información Importante"
