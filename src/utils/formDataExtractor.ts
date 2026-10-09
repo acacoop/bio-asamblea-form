@@ -204,9 +204,14 @@ export function extractFormDataAsJSON() {
 }
 
 /**
- * Generate PDF from DOCX template using the form data
+ * Generate PDF from DOCX template using the form data.
+ * The Carta Poder template authorizes the (single) Titular of the
+ * cooperativa to represent it in the Asamblea, so only the Titular's
+ * name and DNI are needed (there is exactly one Titular per Cooperativa).
  */
-export async function generateCartaPoderPDF(formData: any): Promise<Blob> {
+export async function generateCartaPoderPDF(
+  formData: any,
+): Promise<{ blob: Blob; fileName: string }[]> {
   try {
     // Load the template from the assets folder
     const templateResponse = await fetch(templateCartaPoderUrl);
@@ -235,61 +240,44 @@ export async function generateCartaPoderPDF(formData: any): Promise<Blob> {
     const titulares = parseArray(
       formData.formData?.titulares || formData.titulares,
     );
-    const suplentes = parseArray(
-      formData.formData?.suplentes || formData.suplentes,
-    );
-    const cartasPoder = parseArray(formData.formData?.datos?.cartasPoder);
-    const allPeople = [...titulares, ...suplentes];
 
-    if (cartasPoder.length === 0) {
-      console.log("No cartas poder found, skipping carta poder generation.");
-      return new Blob();
+    // There is only one Titular per Cooperativa
+    const titular = titulares[0] || {};
+
+    if (!titular.nombre) {
+      console.log("No titular found, skipping carta poder generation.");
+      return [];
     }
 
-    // Helper to find person by id
-    const findPerson = (id: string) =>
-      allPeople.find((p: any) => p.id === id) || {};
+    const templateData = {
+      titular: titular.nombre || "",
+      dniTitular: titular.documento || titular.dni || "",
+      cooperativaName,
+      presidente,
+      secretario,
+      anio: ASAMBLEA_YEAR,
+      year: ASAMBLEA_YEAR,
+    };
 
-    const blobFiles: { blob: Blob; fileName: string }[] = [];
+    console.log("Generating carta poder with data:", templateData);
 
-    for (const carta of cartasPoder) {
-      const poderante = findPerson(carta.poderanteId);
-      const apoderado = findPerson(carta.apoderadoId);
+    const fileName = `Asamblea ACABIO ${ASAMBLEA_YEAR} - ${
+      formData.cooperativa?.code || "Unknown"
+    } - CartaPoder - ${titular.nombre || "SinNombre"}.docx`;
 
-      const templateData = {
-        poderdante: poderante.nombre || "",
-        dniPoderdante: poderante.documento || poderante.dni || "",
-        apoderado: apoderado.nombre || "",
-        dniApoderado: apoderado.documento || apoderado.dni || "",
-        cooperativaName,
-        presidente,
-        secretario,
-        anio: ASAMBLEA_YEAR,
-        year: ASAMBLEA_YEAR,
-      };
+    const zip = new PizZip(templateBuffer);
+    const doc = new Docxtemplater(zip, {
+      paragraphLoop: true,
+      linebreaks: true,
+    });
+    doc.render(templateData);
+    const output = doc.getZip().generate({
+      type: "blob",
+      mimeType:
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    });
 
-      console.log("Generating carta poder with data:", templateData);
-
-      var fileName = `Asamblea ACABIO ${ASAMBLEA_YEAR} - ${
-        formData.cooperativa?.code || "Unknown"
-      } - CartaPoder - ${poderante.nombre || "SinNombre"}.docx`;
-      // Create a new docxtemplater instance for each carta
-      const zip = new PizZip(templateBuffer);
-      const doc = new Docxtemplater(zip, {
-        paragraphLoop: true,
-        linebreaks: true,
-      });
-      doc.render(templateData);
-      const output = doc.getZip().generate({
-        type: "blob",
-        mimeType:
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      });
-      blobFiles.push({ blob: output, fileName });
-    }
-    // Always return the array format for consistency
-    // @ts-ignore
-    return blobFiles;
+    return [{ blob: output, fileName }];
   } catch (error: any) {
     console.error("Error generating PDF:", error);
     if (error.properties && error.properties.errors instanceof Array) {
@@ -537,16 +525,16 @@ export async function downloadGeneratedDocument(): Promise<{
 }> {
   try {
     const formData = extractFormDataAsJSON();
-    const credencialBlob = await generatePDF(formData);
+    //const credencialBlob = await generatePDF(formData);
     const cartasPoderBlobs = await generateCartaPoderPDF(formData);
 
-    const fileName = `Asamblea ACABIO ${ASAMBLEA_YEAR} - ${
-      formData.cooperativa?.code || "Unknown"
-    } - Credencial.docx`;
+    //const fileName = `Asamblea ACABIO ${ASAMBLEA_YEAR} - ${
+    //  formData.cooperativa?.code || "Unknown"
+    //} - Credencial.docx`;
 
     const files: { blob: Blob; name: string }[] = [];
 
-    files.push({ blob: credencialBlob, name: fileName });
+    //files.push({ blob: credencialBlob, name: fileName });
     if (Array.isArray(cartasPoderBlobs)) {
       cartasPoderBlobs.forEach((cartaBlob) => {
         files.push({ blob: cartaBlob.blob, name: cartaBlob.fileName });
