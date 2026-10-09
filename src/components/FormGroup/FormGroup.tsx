@@ -206,7 +206,7 @@ export default function FormGroup({ cooperativa }: Props) {
           value={coopNombre}
           readOnly
         />
-        <Input label="Código:" name="codigo" value={codigo} readOnly />
+        <Input label="Código de ingreso:" name="codigo" value={codigo} readOnly />
         <Input
           label="Votos:"
           name="votos"
