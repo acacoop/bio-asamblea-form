@@ -35,9 +35,7 @@ const BodyForm: React.FC<BodyFormProps> = ({
           />
           <Card
             title="📋 Descripción"
-            description="Documentación para nominar al delegado con derecho a voto en la Asamblea General Ordinaria de la ACABIO. Permite registrar al delegado titular.
-
-Tener en cuenta: El delegado debe estar nominado en la Credencial."
+            description="Documentación para nominar al delegado con derecho a voto en la Asamblea General Ordinaria de la ACABIO."
           />
           <Card
             title="🔐 Acceso Seguro"
